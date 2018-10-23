@@ -21,4 +21,14 @@
 
 
 #---------------------------------------------------
-
+/logs/
+/spark-warehouse/
+/.logs/
+/.test/
+/__logs__/
+/__test__/
+/__pycache__/
+*.log
+*.tags
+*.tag
+*.pw
