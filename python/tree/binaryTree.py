@@ -2,6 +2,9 @@ import os
 import sys
 import random
 
+#External Moduls
+from graphviz import Digraph
+
 
 class BiNode() :
     def __init__(self , val) :
@@ -75,19 +78,40 @@ class BinaryTree() :
         return self.traversal
         """
         if root_node :
-            self.preorderTraversal(root_node.left)
+            self.traversal.append((root_node.getElement() , root_node.left.getElement() if None != root_node.left else None))
+            self.traversal.append((root_node.getElement() , root_node.right.getElement() if None != root_node.right else None))
+            self.inorderTraversal(root_node.left)
             print(root_node.getElement())
-            self.preorderTraversal(root_node.right)
+            self.inorderTraversal(root_node.right)
+
+    # Iterative function for inorder tree traversal
+    def inorderTraversal2(self , root_node) :
+        current = root_node
+        s = list()
+        done = 0
+
+        while (not done) :
+            if (current is not None) :
+                s.append(current)
+                current = current.left
+            else :
+                if (len(s) > 0) :
+                    current = s.pop()
+                    print(current.getElement())
+                    current = current.right
+                else :
+                    done = 1
 
     """
     后序遍历(LRD)
     """
     def postorderTraversal(self , root_node) :
         if root_node :
-            self.preorderTraversal(root_node.left)
-            self.preorderTraversal(root_node.right)
+            self.postorderTraversal(root_node.left)
+            self.postorderTraversal(root_node.right)
             print(root_node.getElement())
 
+    # Iterative function for inorder tree traversal
     def morrisTraversal(self , root_node) :
         current = root_node
         while (current is not None) :
@@ -106,16 +130,19 @@ class BinaryTree() :
                     print(current.getElement())
                     current = current.right
 
-
 if "__main__" == __name__ :
     #node_list = [random.randint(0 , 100) for i in range(10)]
-    node_list = [i for i in range(1,11)]
+    node_list = [i for i in range(1,16)]
     bt = BinaryTree()
     for v in node_list :
         bt.addNode(v)
-    print("preorder")
-    bt.preorderTraversal(bt.root)
     print("inorder")
-    bt.inorderTraversal(bt.root)
-    print("postorder")
-    bt.postorderTraversal(bt.root)
+    bt.inorderTraversal2(bt.root)
+    #bt.morrisTraversal(bt.root)
+
+    #g = Digraph("G" , filename="output.gv")
+    #for v in bt.traversal :
+    #    if None == v[1] :
+    #        continue
+    #    g.edge(str(v[0]) , str(v[1]))
+    #g.save()
