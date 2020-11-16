@@ -22,14 +22,14 @@
 
 #---------------------------------------------------
 /.idea/
-/.vs/
+.vs/
 /logs/
-/spark-warehouse/
-/.logs/
-/.test/
-/__logs__/
-/__test__/
-/__pycache__/
+spark-warehouse/
+.logs/
+.test/
+__logs__/
+__test__/
+__pycache__/
 *.log
 *.tags
 *.tag
