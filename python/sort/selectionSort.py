@@ -1,13 +1,14 @@
-import os
-import sys
+# -*- coding: utf-8 -*-
 import copy
 import random
 
-"""
-选择排序：
-时间复杂度：(n-1) + (n-2) + ... + 2 + 1 = n(n-1)/2 ~ n^2/2 --> O(n^2)
-"""
 def selectionSort(ori_arr=list()) :
+    """
+    选择排序：
+    时间复杂度：(n-1) + (n-2) + ... + 2 + 1 = n(n-1)/2 ~ n^2/2 --> O(n^2)
+    :param ori_arr: 待排序数列
+    :return: 排序好的结果数列
+    """
     arr = list(copy.deepcopy(ori_arr))
     if 1 == len(arr) :
         return arr
@@ -42,8 +43,9 @@ def shellSort(ori_arr=list()) :
 
 if "__main__" == __name__ :
     ori_arr = [random.randint(0 , 100) for i in range(10)]
-    selection_rst = selectionSort(ori_arr)
-    shell_rst = shellSort(ori_arr)
+    ori_arr = [59 , 14, 35, 10,15, 41, 64, 22, 55, 40]
+    # ori_arr = [10, 14, 15, 22, 35, 40, 41, 55, 59, 64]
     print("ori_arr: " , ori_arr)
-    print("sel_arr: " , selection_rst)
-    print("shl_arr: " , shell_rst)
+    rst = selectionSort(ori_arr)
+    # shell_rst = shellSort(ori_arr)
+    print("sel_arr: " , rst)

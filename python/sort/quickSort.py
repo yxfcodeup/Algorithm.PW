@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-import os
-import sys
-import copy
 import random
-import datetime
 
 def colorString(nums=set()):
     rstr = ""
@@ -68,6 +64,7 @@ def quickSort(arr , low , high):
 if "__main__" == __name__:
     ori_arr = [random.randint(0 , 100) for i in range(10)]
     ori_arr = [59 , 14, 35, 10,15, 41, 64, 22, 55, 40]
+    ori_arr = [10, 14, 15, 22, 35, 40, 41, 55, 59, 64]
     print(f"ori_arr: {ori_arr}")
     quickSort(ori_arr , 0 , len(ori_arr)-1)
     print(f"rst_arr: {ori_arr}")
