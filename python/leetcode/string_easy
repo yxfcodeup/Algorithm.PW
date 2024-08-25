@@ -1,0 +1,336 @@
+# -*- coding: utf-8 -*-
+import copy
+from typing import List
+
+
+class Question:
+    def __init__(self, number: int = 0) -> None:
+        self.question_number = number
+        
+    def question_1154(self, date: str) -> int:
+        """
+        给你一个字符串 date ，按 YYYY-MM-DD 格式表示一个 现行公元纪年法 日期。返回该日期是当年的第几天。
+
+        示例 1：
+            输入：date = "2019-01-09"
+            输出：9
+            解释：给定日期是2019年的第九天。
+        示例 2：
+            输入：date = "2019-02-10"
+            输出：41
+
+        提示：
+            date.length == 10
+            date[4] == date[7] == '-'，其他的 date[i] 都是数字
+            date 表示的范围从 1900 年 1 月 1 日至 2019 年 12 月 31 日
+        """
+        if len(date) != 10 or date[4] != "-" or date[7] != "-":
+            return -1
+            
+        year = int(date[:4])
+        month = int(date[5:7])
+        day = int(date[8:])
+        days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        
+        if 1900 <= year <= 2019:
+            res = sum(days[:month-1]) + day
+            if month > 2 and ((year % 4 == 0 and year % 100 != 0) or year % 400 == 0):
+                    res += 1
+            return res
+        else:
+            return -1
+            
+    def question_125(self, s: str) -> bool:
+        """
+        如果在将所有大写字符转换为小写字符、并移除所有非字母数字字符之后，短语正着读和反着读都一样。则可以认为该短语是一个 回文串 。
+        字母和数字都属于字母数字字符。
+        给你一个字符串 s，如果它是 回文串 ，返回 true ；否则，返回 false 。
+
+        示例 1：
+            输入: s = "A man, a plan, a canal: Panama"
+            输出：true
+            解释："amanaplanacanalpanama" 是回文串。
+        示例 2：
+            输入：s = "race a car"
+            输出：false
+            解释："raceacar" 不是回文串。
+        示例 3：
+            输入：s = " "
+            输出：true
+            解释：在移除非字母数字字符之后，s 是一个空字符串 "" 。
+            由于空字符串正着反着读都一样，所以是回文串。
+
+        提示：
+            1 <= s.length <= 2 * 105
+            s 仅由可打印的 ASCII 字符组成
+        """
+        letters = "0123456789qwertyuiopasdfghjklzxcvbnm"
+        s = s.lower()
+        ns = ""
+        for x in s:
+            if x in letters:
+                ns += x
+        sn = ""
+        for i in range(len(ns)):
+            sn += ns[len(ns)-i-1]
+        return True if ns == sn else False
+        
+    def question_344(self, s: List[str]) -> None:
+        """
+        编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 s 的形式给出。
+        不要给另外的数组分配额外的空间，你必须原地修改输入数组、使用 O(1) 的额外空间解决这一问题。
+
+        示例 1：
+            输入：s = ["h","e","l","l","o"]
+            输出：["o","l","l","e","h"]
+        示例 2：
+            输入：s = ["H","a","n","n","a","h"]
+            输出：["h","a","n","n","a","H"]
+
+        提示：
+            1 <= s.length <= 105
+            s[i] 都是 ASCII 码表中的可打印字符
+        """
+        for i in range(int(len(s)/2)):
+            print(i, s[i], s[len(s)-i-1])
+            s[i], s[len(s)-i-1] = s[len(s)-i-1], s[i]
+        return s
+        
+    def question_20(self, s: str) -> bool:
+        """
+        给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串 s ，判断字符串是否有效。
+        有效字符串需满足：
+        左括号必须用相同类型的右括号闭合。
+        左括号必须以正确的顺序闭合。
+        每个右括号都有一个对应的相同类型的左括号。
+
+        示例 1：
+            输入：s = "()"
+            输出：true
+        示例 2：
+            输入：s = "()[]{}"
+            输出：true
+        示例 3：
+            输入：s = "(]"
+            输出：false
+
+        提示：
+            1 <= s.length <= 104
+            s 仅由括号 '()[]{}' 组成
+        """
+        t1 = []     # (
+        t2 = []     # [
+        t3 = []     # {
+        for x in s:
+            if "(" == x:
+                t1.append(x)
+            elif ")" == x:
+                if len(t1) == 0:
+                    return False
+                else:
+                    t1.pop()
+            elif "[" == x:
+                t2.append(x)
+            elif "]" == x:
+                if len(t2) == 0:
+                    return False
+                else:
+                    t2.pop()
+            elif "{" == x:
+                t3.append(x)
+            elif "}" == x:
+                if len(t3) == 0:
+                    return False
+                else:
+                    t3.pop()
+        if len(t1) == 0 and len(t2) == 0 and len(t3) == 0:
+            return True
+        else:
+            return False
+            
+    def question_392(self, s: str, t: str) -> bool:
+        """
+        给定字符串 s 和 t ，判断 s 是否为 t 的子序列。
+        字符串的一个子序列是原始字符串删除一些（也可以不删除）字符而不改变剩余字符相对位置形成的新字符串。（例如，"ace"是"abcde"的一个子序列，而"aec"不是）。
+
+        进阶：
+            如果有大量输入的 S，称作 S1, S2, ... , Sk 其中 k >= 10亿，你需要依次检查它们是否为 T 的子序列。在这种情况下，你会怎样改变代码？
+
+        示例 1：
+            输入：s = "abc", t = "ahbgdc"
+            输出：true
+        示例 2：
+            输入：s = "axc", t = "ahbgdc"
+            输出：false
+
+        提示：
+            0 <= s.length <= 100
+            0 <= t.length <= 10^4
+            两个字符串都只由小写字符组成。
+        """
+        if "" == s:
+            return True
+        check_idx = 0
+        res = False
+        for i in range(len(t)):
+            if t[i] == s[check_idx]:
+                check_idx += 1
+                if check_idx >= len(s):
+                    res = True
+                    return res
+        return res
+        
+    def question_409(self, s: str) -> int:
+        """
+        给定一个包含大写字母和小写字母的字符串 s ，返回 通过这些字母构造成的 最长的回文串 的长度。
+        在构造过程中，请注意 区分大小写 。比如 "Aa" 不能当做一个回文字符串。
+
+        示例 1:
+            输入:s = "abccccdd"
+            输出:7
+            解释:
+            我们可以构造的最长的回文串是"dccaccd", 它的长度是 7。
+        示例 2:
+            输入:s = "a"
+            输出:1
+            解释：可以构造的最长回文串是"a"，它的长度是 1。
+        
+        提示:
+            1 <= s.length <= 2000
+            s 只由小写 和/或 大写英文字母组成
+        """
+        lower_letters = "qwertyuiopasdfghjklzxcvbnm"
+        upper_letters = lower_letters.upper()
+        letters_map = {x: 0 for x in lower_letters + upper_letters}
+        for y in s:
+            if y in letters_map:
+                letters_map[y] += 1
+
+        double_num = 0
+        single_num = 0
+        exists_single = 0
+        for k, v in letters_map.items():
+            if v % 2 == 0:
+                double_num += v
+            else:
+                single_num += v - 1
+                exists_single = 1
+        return double_num + single_num + exists_single
+        
+    def question_859(self, s: str, goal: str) -> bool:
+        """
+        给你两个字符串 s 和 goal ，只要我们可以通过交换 s 中的两个字母得到与 goal 相等的结果，就返回 true ；否则返回 false 。
+        交换字母的定义是：取两个下标 i 和 j （下标从 0 开始）且满足 i != j ，接着交换 s[i] 和 s[j] 处的字符。
+        例如，在 "abcd" 中交换下标 0 和下标 2 的元素可以生成 "cbad" 。
+        
+        示例 1：
+            输入：s = "ab", goal = "ba"
+            输出：true
+            解释：你可以交换 s[0] = 'a' 和 s[1] = 'b' 生成 "ba"，此时 s 和 goal 相等。
+        示例 2：
+            输入：s = "ab", goal = "ab"
+            输出：false
+            解释：你只能交换 s[0] = 'a' 和 s[1] = 'b' 生成 "ba"，此时 s 和 goal 不相等。
+        示例 3：
+            输入：s = "aa", goal = "aa"
+            输出：true
+            解释：你可以交换 s[0] = 'a' 和 s[1] = 'a' 生成 "aa"，此时 s 和 goal 相等。
+
+        提示：
+            1 <= s.length, goal.length <= 2 * 104
+            s 和 goal 由小写英文字母组成
+        """
+        if len(s) < 2 or len(goal) < 2 or len(s) != len(goal):
+            return False
+        
+        not_equal_letters = []
+        letters_map = {}
+        for i in range(len(s)):
+            if s[i] != goal[i]:
+                not_equal_letters.append(i)
+            if s[i] in letters_map:
+                letters_map[s[i]] += 1
+            else:
+                letters_map[s[i]] = 1
+
+        if len(not_equal_letters) == 0:
+            more_than_two = False
+            for k, v in letters_map.items():
+                if v >= 2:
+                    more_than_two = True
+            return more_than_two
+        elif len(not_equal_letters) == 1:
+            return False
+        elif len(not_equal_letters) == 2:
+            if s[not_equal_letters[0]] == goal[not_equal_letters[1]] and s[not_equal_letters[1]] == goal[not_equal_letters[0]]:
+                return True
+            else:
+                return False
+        else:
+            return False
+        
+
+
+def test_1154():
+    q = Question(1154)
+    date = "2019-01-09"
+    date = "1900-05-02"
+    res = q.question_1154(date)
+    print(f"res: {res}")
+    
+    
+def test_125():
+    q = Question(125)
+    s = "A man, a plan, a canal: Panama"
+    s = "race a car"
+    res = q.question_125(s)
+    print(f"res: {res}")
+    
+
+def test_344():
+    q = Question(344)
+    s = ["h","e","l","l","o"]
+    s = ["h","e","l","o"]
+    res = q.question_344(s)
+    print(f"res: {res}")
+    
+    
+def test_20():
+    q = Question(20)
+    s = "()[{}"
+    res = q.question_20(s)
+    print(f"res: {res}")
+    
+    
+def test_392():
+    q = Question(392)
+    s = "abc"
+    t = "ahbgdc"
+    res = q.question_392(s, t)
+    print(f"res: {res}")
+
+
+def test_409():
+    q = Question(409)
+    s = "abccccdd"
+    s = "civilwartestingwhetherthatnaptionoranynartionsoconceivedandsodedicatedcanlongendureWeareqmetonagreatbattlefiemldoftzhatwarWehavecometodedicpateaportionofthatfieldasafinalrestingplaceforthosewhoheregavetheirlivesthatthatnationmightliveItisaltogetherfangandproperthatweshoulddothisButinalargersensewecannotdedicatewecannotconsecratewecannothallowthisgroundThebravelmenlivinganddeadwhostruggledherehaveconsecrateditfaraboveourpoorponwertoaddordetractTgheworldadswfilllittlenotlenorlongrememberwhatwesayherebutitcanneverforgetwhattheydidhereItisforusthelivingrathertobededicatedheretotheulnfinishedworkwhichtheywhofoughtherehavethusfarsonoblyadvancedItisratherforustobeherededicatedtothegreattdafskremainingbeforeusthatfromthesehonoreddeadwetakeincreaseddevotiontothatcauseforwhichtheygavethelastpfullmeasureofdevotionthatweherehighlyresolvethatthesedeadshallnothavediedinvainthatthisnationunsderGodshallhaveanewbirthoffreedomandthatgovernmentofthepeoplebythepeopleforthepeopleshallnotperishfromtheearth"
+    res = q.question_409(s)
+    print(f"res: {res} / {len(s)}")
+
+
+def test_859():
+    q = Question(859)
+    s = "aaab"
+    goal = "aaab"
+    res = q.question_859(s, goal)
+    print(f"res: {res}")
+    
+
+if "__main__" == __name__:
+    # test_1154()
+    # test_125()
+    # test_344()
+    # test_20()
+    # test_392()
+    # test_409()
+    test_859()
